@@ -1,9 +1,10 @@
 # kubernetes-eks
-apply Kubernetes on AWS EKS
+Apply Kubernetes on AWS EKS
 
 *Prerequisites are not detailed. E.g. installing kubernetes and terraform.*
 
 # Terraform
+In directory infrastructure - <br>
 `terraform init` <br>
 `terraform plan` <br>
 `terraform apply` <br>
@@ -35,6 +36,7 @@ Install nginx-ingress by helm:
 
 ## Apply - 
 
+In directory k8s - <br>
 Apply the deployment and service:
 `kubectl apply -f eks-sample-deployment.yaml`
 
@@ -44,5 +46,6 @@ Apply the ingress:
 # Checks - 
 
 After apply - get the testing url from the `Address` value: `kubectl describe ingress nginx-ingress -n eks-sample-app`<br>
-If Address is empty wait and try again later.
+If Address is empty wait and try again later.<br>
+Check the Address in any browser.
 
