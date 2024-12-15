@@ -10,6 +10,10 @@ on: workflow_dispatch
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    # run in the correct directory - infrastructure/github-actions
+    defaults:
+      run:
+        working-directory: ./infrastructure/github-actions
 
     steps:
     # Step 1: Checkout the repository
