@@ -44,6 +44,6 @@ jobs:
 
     # Step 6: Terraform Apply
       # Optional - Uncomment this section to enable auto-deployment
-    #- name: Terraform Apply
-    #  if: github.ref == 'refs/heads/main'  # Only apply on main branch
-    #  run: terraform apply -auto-approve
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main'  # Only apply on main branch
+      run: terraform apply -auto-approve
