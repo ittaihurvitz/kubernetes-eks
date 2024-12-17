@@ -48,11 +48,18 @@ jobs:
             --namespace eks-sample-app \
             --set controller.service.type=LoadBalancer || echo "Helm install already executed"
 
-      # Step 7: Apply Kubernetes manifests
+      # Step 7: Apply Kubernetes manifests of Deployment and Service
       - name: Apply Deployment and Service
         run: |
           kubectl apply -f k8s/eks-sample-deployment.yaml
 
+      # Step 8: Wait for a few seconds
+      - name: Wait for Deployment
+        run: |
+          echo "Waiting for 30 seconds before applying Ingress..."
+          sleep 30
+
+      # Step 9: Apply Kubernetes manifest of Ingress
       - name: Apply Ingress
         run: |
           kubectl apply -f k8s/eks-sample-ingress.yaml
