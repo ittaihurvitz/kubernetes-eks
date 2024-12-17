@@ -1,0 +1,58 @@
+name: Kubernetes Deployment
+
+#on:
+#  push:
+#    branches:
+#      - main
+
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    name: Deploy to EKS Cluster
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Configure AWS credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: il-central-1
+
+      # Step 3: Configure kubeconfig for the EKS cluster
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig --region il-central-1 --name main-cluster
+
+      # Step 4: Create namespace
+      - name: Create Namespace
+        run: |
+          kubectl create namespace eks-sample-app || echo "Namespace already exists"
+
+      # Step 5: Add Helm repo and update it
+      - name: Add Helm Repo and Update
+        run: |
+          helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+          helm repo update
+
+      # Step 6: Install NGINX ingress using Helm
+      - name: Install NGINX Ingress
+        run: |
+          helm install nginx-ingress ingress-nginx/ingress-nginx \
+            --namespace eks-sample-app \
+            --set controller.service.type=LoadBalancer || echo "Helm install already executed"
+
+      # Step 7: Apply Kubernetes manifests
+      - name: Apply Deployment and Service
+        run: |
+          kubectl apply -f k8s/eks-sample-deployment.yaml
+
+      - name: Apply Ingress
+        run: |
+          kubectl apply -f k8s/eks-sample-ingress.yaml
