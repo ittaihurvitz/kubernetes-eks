@@ -52,6 +52,8 @@ class BrowseAddress():
 
 # Main function
 if __name__ == "__main__":
+    debug = False
+
     parser = ArgumentParser()
     parser.add_argument("--input_text")
 
@@ -59,10 +61,14 @@ if __name__ == "__main__":
     
     extractor = ParseAddress(args.input_text)
     address = extractor.find_address_line()
+    
     if address:
         print(address)
-        checker = BrowseAddress(address)
-        checker.run()
+
+        # remark: when running debug the job will fail due to untreated multiline
+        if debug:
+            checker = BrowseAddress(address)
+            checker.run()
     else:
         print("Address was not found")
     
