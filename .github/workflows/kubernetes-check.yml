@@ -44,13 +44,13 @@ jobs:
       - name: Get Ingress details
         id: describe
         run: |
-          echo "INGRESS_OUTPUT=$(kubectl describe ingress nginx-ingress -n eks-sample-app)" >> $GITHUB_ENV
+          echo "ingress_output=$(kubectl describe ingress nginx-ingress -n eks-sample-app)" >> $GITHUB_OUTPUT
 
       # Step 6: Get the address
       - name: Run read_address script
         id: read_address
         run:
-          script_output=$(python read_address.py --input_text=$INGRESS_OUTPUT)
+          script_output=$(python read_address.py --input_text=${{ steps.describe.outputs.ingress_output }})
           echo "address=$script_output" >> "$GITHUB_OUTPUT"
   
       # Step 7: Display the address in the workflow summary
