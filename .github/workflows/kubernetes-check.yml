@@ -1,0 +1,58 @@
+name: Kubernetes Check
+
+#on:
+#  push:
+#    branches:
+#      - main
+
+on: workflow_dispatch
+
+jobs:
+  test:
+    name: Test the deployment
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      # Step 1: Checkout code
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Configure AWS credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: il-central-1
+
+      # Step 3: Configure kubeconfig for the EKS cluster
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig --region il-central-1 --name main-cluster
+
+      # Step 4: Install python requests
+      - name: Install python requests
+        run: |
+          python -m pip install --upgrade pip  
+          pip install requests
+
+      # Step 5: Get the ingress details
+      - name: Get Ingress details
+        id: describe
+        run: |
+          kubectl describe ingress nginx-ingress -n eks-sample-app > ingress_output.txt
+          echo "ingress_output=$(<ingress_output.txt)" >> $GITHUB_OUTPUT
+
+      - name: Run read_address script
+        id: read_address
+        run:
+          script_output=$(python read_address.py --input_text=${{ steps.describe.outputs.ingress_output }})
+          echo "address=$script_output" >> "$GITHUB_OUTPUT"
+  
+      - name: Display Result
+        run: |
+          echo "Address for manual check: ${{ steps.read_address.outputs.address }}" >> $GITHUB_STEP_SUMMARY
