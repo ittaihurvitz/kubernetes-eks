@@ -44,7 +44,7 @@ jobs:
       - name: Get Ingress details
         id: describe
         run: |
-          echo "ingress_output=$(kubectl describe ingress nginx-ingress -n eks-sample-app) >> $GITHUB_OUTPUT
+          echo "ingress_output=$(kubectl describe ingress nginx-ingress -n eks-sample-app)" >> $GITHUB_OUTPUT
 
       # Step 6: Get the address
       - name: Run read_address script
