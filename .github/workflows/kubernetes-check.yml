@@ -52,4 +52,4 @@ jobs:
       - name: Run read_address script
         id: read_address
         run: |
-          script_output=$(python read_address.py --input_text="Address:          ab78bc23025834f98bc4b31961e5abcc-1272387290.il-central-1.elb.amazonaws.com")
+          script_output=$(python .github/python/read_address.py --input_text="Address:          ab78bc23025834f98bc4b31961e5abcc-1272387290.il-central-1.elb.amazonaws.com")
