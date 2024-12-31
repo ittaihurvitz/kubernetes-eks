@@ -6,10 +6,10 @@ Run the following github actions: <br>
 **Terraform Deployment** in order to create the EKS cluster on AWS. <br>
 **Kubernetes Deployment** in prder to apply kubernetes pods, services and ingress on the cluster. <br>
 **Kubernetes Check** in order to check that the application is active. <br>
-Finally you should run **Kubernetes Destry** in prder to delete everything that was applied on AWS. <br>
-**Avoiding the destry will increase the AWS costs!** <br>
-Please pay attention that a failed Destroy due to a *subnet that has dependencies and cannot be deleted* is temporary considred as satisfying. <br>
-The reason is that it cleared all or most of the paid assets.
+<br>
+Finally you should delete everything that was applied on AWS in order to avoid increase of the AWS costs. <br>
+First delete manually the Load Balancer and Security Group that were created by kubermnetes for the Ingress. <br>
+Then run **Kubernetes Destry** in order to delete everything that was applied by Terraform on AWS. <br>
 
 # Manual deployment
 Clone the repository to your own computer. <br>
