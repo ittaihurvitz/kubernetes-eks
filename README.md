@@ -8,8 +8,7 @@ Run the following github actions: <br>
 **Kubernetes Check** in order to check that the application is active. <br>
 <br>
 Finally you should delete everything that was applied on AWS in order to avoid increase of the AWS costs. <br>
-First delete manually the Load Balancer and Security Group that were created by kubermnetes for the Ingress. <br>
-Then run **Kubernetes Destry** in order to delete everything that was applied by Terraform on AWS. <br>
+Run **Kubernetes Destry** in order to delete everything that was applied by Helm, Kubernetes and Terraform on AWS. <br>
 
 # Manual deployment
 Clone the repository to your own computer. <br>
